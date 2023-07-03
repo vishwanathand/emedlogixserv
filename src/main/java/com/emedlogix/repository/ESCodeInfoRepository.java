@@ -14,10 +14,6 @@ public interface ESCodeInfoRepository extends ElasticsearchRepository<CodeInfo, 
     CodeInfo getByCode(String code);
 
     List<CodeInfo> findByCode(String s);
-
-    @Query("{\"query\": {\"bool\": {\"should\": [{\"wildcard\": {\"code\": \"I97*\"}}]}}}")
-    List<CodeInfo> searchAllcodes(String code);
-
     List<CodeInfo> findByCodeStartingWith(String code);
 }
 
