@@ -28,7 +28,7 @@ public class ExtractorScheduler {
 
     @Scheduled(fixedDelay = 1000000)
     public void doExtractCode() {
-        logger.info("Extractor Service has been initiated Ordered Codes...");
+        logger.info("Extractor Service has been initiated Codes...");
         Map<String, CodeInfo> codeDetailsMap = extractorService.doExtractCodes();
         if (codeDetailsMap != null && !codeDetailsMap.isEmpty()) {
             logger.info("Total codes extracted {}", codeDetailsMap.entrySet().size());
