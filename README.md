@@ -1,4 +1,5 @@
 # Emedlogix Service
+Emedlogix is an AI enabled cloud based Next gen HCC Risk Adjustment Autocoding (CAC) application that use NLP and ML to seamlessly extract ICD-10-CM
 
 ## build
 mvn clean install
