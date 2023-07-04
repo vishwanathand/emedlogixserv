@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ExtractorService {
 
-    Map<String, CodeInfo> doExtractCodes();
+    void doExtractCodes();
 
-    Map<String, CodeDetails> doExtractOrderedCodes();
+    void doExtractOrderedCodes();
 }

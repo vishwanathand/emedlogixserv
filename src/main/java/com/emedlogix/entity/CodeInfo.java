@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import javax.persistence.Column;
 
 
-@Document(indexName = "details")
+@Document(indexName = "codes")
 public class CodeInfo {
     @Id
     @javax.persistence.Id
@@ -20,7 +20,7 @@ public class CodeInfo {
     @Field(type = FieldType.Text, name = "code")
     private String code;
     @Field(type = FieldType.Text, name = "description")
-    private String shortDescription;
+    private String description;
 
     public String getId() {
         return id;
@@ -39,12 +39,12 @@ public class CodeInfo {
         this.code = code;
     }
 
-    public String getShortDescription() {
-        return shortDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 

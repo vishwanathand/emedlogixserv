@@ -19,48 +19,18 @@ public class ExtractorScheduler {
     public static final Logger logger = LoggerFactory.getLogger(ExtractorScheduler.class);
     @Autowired
     ExtractorService extractorService;
-    @Autowired
-    ESCodeInfoRepository esCodeInfoRepository;
-
-    @Autowired
-    DBCodeDetailsRepository dbCodeDetailsRepository;
-
 
     @Scheduled(fixedDelay = 1000000)
     public void doExtractCode() {
         logger.info("Extractor Service has been initiated Codes...");
-        Map<String, CodeInfo> codeDetailsMap = extractorService.doExtractCodes();
-        if (codeDetailsMap != null && !codeDetailsMap.isEmpty()) {
-            logger.info("Total codes extracted {}", codeDetailsMap.entrySet().size());
-            esCodeInfoRepository.saveAll(codeDetailsMap.values());
-        }
+        extractorService.doExtractCodes();
         logger.info("Extractor Service Codes completed...");
     }
 
     @Scheduled(fixedDelay = 1000000)
     public void doExtractOderCode() {
         logger.info("Extractor Service has been initiated for Ordered Codes...");
-        Map<String, CodeDetails> codeDetailsMap = extractorService.doExtractOrderedCodes();
-        if (codeDetailsMap != null && !codeDetailsMap.isEmpty()) {
-            logger.info("Total codes extracted {}", codeDetailsMap.entrySet().size());
-            Iterator<Map.Entry<String, CodeDetails>> itr = codeDetailsMap.entrySet().iterator();
-            ArrayList dataList = new ArrayList();
-            int counter=0;
-            while (itr.hasNext()) {
-                Map.Entry<String, CodeDetails> entry = itr.next();
-                CodeDetails fetchCodeDetails = entry.getValue();
-                dataList.add(fetchCodeDetails);
-                counter++;
-                if(dataList.size()%2000 == 0){
-                    dbCodeDetailsRepository.saveAll(dataList);
-                    dataList.clear();
-
-                }
-            }
-            if(!dataList.isEmpty()) {
-                dbCodeDetailsRepository.saveAll(dataList);
-            }
-        }
+        extractorService.doExtractOrderedCodes();
         logger.info("Extractor Service Ordered Codes completed...");
     }
 }
