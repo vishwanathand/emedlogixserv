@@ -12,17 +12,17 @@ public class ExtractorScheduler {
     @Autowired
     ExtractorService extractorService;
 
-    @Scheduled(fixedDelay = 1000000)
+    @Scheduled(fixedDelay = 100000)
     public void doExtractChaperSectionXML() {
         logger.info("Extractor Service has been initiated for XML extraction...");
         extractorService.doExtractCapterSectionXML();
         logger.info("Extractor Service XML completed...");
     }
 
-    @Scheduled(fixedDelay = 1000000)
+   /* @Scheduled(fixedDelay = 10000)
     public void doExtractOderCode() {
         logger.info("Extractor Service has been initiated for Ordered Codes...");
-        extractorService.doExtractOrderedCodes();
+       // extractorService.doExtractOrderedCodes();
         logger.info("Extractor Service Ordered Codes completed...");
-    }
+    }*/
 }

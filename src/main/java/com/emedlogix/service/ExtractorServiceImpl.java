@@ -4,13 +4,19 @@ import com.emedlogix.entity.CodeDetails;
 import com.emedlogix.entity.CodeInfo;
 import com.emedlogix.repository.DBCodeDetailsRepository;
 import com.emedlogix.repository.ESCodeInfoRepository;
+import generated.ChapterType;
+import generated.ContentType;
 import generated.ICD10CMTabular;
+import generated.NoteType;
 import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.NodeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.xml.soap.Node;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -30,16 +36,33 @@ public class ExtractorServiceImpl implements ExtractorService {
     @Override
     public void doExtractCapterSectionXML() {
         String fileStr = "/Users/mnachiappan/Documents/Development/clarit/icd10cm_codes_2023.txt";
-        logger.info("Start Extracting Chapter Section from XML file:", fileStr);
+        logger.info("Start Extracting Chapter Section from XML file:{}", fileStr);
         try{
             JAXBContext context = JAXBContext.newInstance(ICD10CMTabular.class);
             ICD10CMTabular tabular = (ICD10CMTabular)context.createUnmarshaller()
                     .unmarshal(new FileReader("/Users/mnachiappan/Documents/Development/clarit/icd10cm_tabular_2023.xml"));
-            logger.info("Retrived Data :", tabular.getChapter().size());
+            logger.info("Retrived Data :{}", tabular.getChapter().size());
+            Iterator<ChapterType> tabIter = tabular.getChapter().listIterator();
+            while(tabIter.hasNext()) {
+                ChapterType chapterType = tabIter.next();
+                ListIterator<JAXBElement<?>> NodeIter = chapterType.getInclusionTermOrSevenChrNoteOrSevenChrDef().listIterator();
+                while(NodeIter.hasNext()){
+                   NoteType noteType = (NoteType)NodeIter.next().getValue();
+                   Iterator<ContentType> contenIter = noteType.getNote().listIterator();
+                   while(contenIter.hasNext()){
+                       ContentType contentType = contenIter.next();
+                       Iterator iter = contentType.getContent().listIterator();
+                       while(iter.hasNext()){
+                          String note = (String) iter.next();
+                          logger.info("Notes, {} ", note);
+                       }
+                   }
+
+                }
+            }
         } catch(Exception e){
             logger.error(e.toString(), e);
         }
-
         logger.info("Chapter section from XML successfully extracted:");
     }
 
