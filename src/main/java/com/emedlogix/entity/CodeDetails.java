@@ -4,9 +4,10 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name="medical_codes")
+@Table(name="emed_medical_codes")
 public class CodeDetails{
 
     Boolean billable;
@@ -19,6 +20,11 @@ public class CodeDetails{
     private String code;
 
     private String shortDescription;
+
+    @Transient
+    private Chapter chapter;
+    @Transient
+    private Section section;
 
     public String getId() {
         return id;
@@ -61,11 +67,32 @@ public class CodeDetails{
         this.longDescription = longDescription;
     }
 
+    public Chapter getChapter() {
+        return chapter;
+    }
+
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
+
     @Override
     public String toString() {
-        return getCode() + ":"
-                +getBillable()+":"
-                +getShortDescription()+ ":"
-                +getLongDescription();
+        return "CodeDetails{" +
+                "billable=" + billable +
+                ", longDescription='" + longDescription + '\'' +
+                ", id='" + id + '\'' +
+                ", code='" + code + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", chapter=" + chapter +
+                ", section=" + section +
+                '}';
     }
 }

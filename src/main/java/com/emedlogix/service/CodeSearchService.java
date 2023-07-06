@@ -4,8 +4,11 @@ package com.emedlogix.service;
 import com.emedlogix.controller.CodeSearchController;
 import com.emedlogix.entity.CodeDetails;
 import com.emedlogix.entity.CodeInfo;
+import com.emedlogix.entity.Section;
+import com.emedlogix.repository.ChapterRepository;
 import com.emedlogix.repository.DBCodeDetailsRepository;
 import com.emedlogix.repository.ESCodeInfoRepository;
+import com.emedlogix.repository.SectionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,10 @@ public class CodeSearchService implements CodeSearchController {
 
     @Autowired
     DBCodeDetailsRepository dbCodeDetailsRepository;
+    @Autowired
+    SectionRepository sectionRepository;
+    @Autowired
+    ChapterRepository chapterRepository;
 
     @Override
     public CodeInfo getCodeInfo(String code) {
@@ -52,6 +59,10 @@ public class CodeSearchService implements CodeSearchController {
 
     public CodeDetails getCodeInfoDetails(@PathVariable String code){
         logger.info("Getting Code Information Details for code:", code);
-        return dbCodeDetailsRepository.findByCode(code);
+        CodeDetails codeDetails = dbCodeDetailsRepository.findByCode(code);
+        Section section = sectionRepository.findByCode(code);
+        codeDetails.setSection(section);
+        codeDetails.setChapter(chapterRepository.findById(section.getChapterId()).get());
+        return codeDetails;
     }
 }

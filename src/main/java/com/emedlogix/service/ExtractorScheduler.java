@@ -6,23 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class ExtractorScheduler {
     public static final Logger logger = LoggerFactory.getLogger(ExtractorScheduler.class);
     @Autowired
     ExtractorService extractorService;
 
-    @Scheduled(fixedDelay = 100000)
+    @PostConstruct
     public void doExtractChaperSectionXML() {
         logger.info("Extractor Service has been initiated for XML extraction...");
         extractorService.doExtractCapterSectionXML();
         logger.info("Extractor Service XML completed...");
     }
 
-   /* @Scheduled(fixedDelay = 10000)
+    @PostConstruct
     public void doExtractOderCode() {
         logger.info("Extractor Service has been initiated for Ordered Codes...");
-       // extractorService.doExtractOrderedCodes();
+        extractorService.doExtractOrderedCodes();
         logger.info("Extractor Service Ordered Codes completed...");
-    }*/
+    }
 }
