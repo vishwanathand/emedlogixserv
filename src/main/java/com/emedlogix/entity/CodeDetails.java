@@ -6,6 +6,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import javax.persistence.*;
 
 @Entity
+@Table(name="medical_codes")
 public class CodeDetails{
 
     Boolean billable;

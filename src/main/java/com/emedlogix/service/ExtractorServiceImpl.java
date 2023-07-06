@@ -4,6 +4,8 @@ import com.emedlogix.entity.CodeDetails;
 import com.emedlogix.entity.CodeInfo;
 import com.emedlogix.repository.DBCodeDetailsRepository;
 import com.emedlogix.repository.ESCodeInfoRepository;
+import generated.ICD10CMTabular;
+import jakarta.xml.bind.JAXBContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,28 +28,19 @@ public class ExtractorServiceImpl implements ExtractorService {
     public static final Logger logger = LoggerFactory.getLogger(ExtractorServiceImpl.class);
 
     @Override
-    public void doExtractCodes() {
+    public void doExtractCapterSectionXML() {
         String fileStr = "/Users/mnachiappan/Documents/Development/clarit/icd10cm_codes_2023.txt";
-        logger.info("Start Extracting Codes from file {}", fileStr);
-        Map<String, CodeInfo> extractedData = new HashMap<>();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(new File(fileStr)));
-            String line;
-            List<String> lines = new ArrayList<>();
-            while ((line = reader.readLine()) != null) {
-                int index = line.indexOf("  ");
-                if (index != -1) {
-                    CodeInfo codeInfo = new CodeInfo();
-                    codeInfo.setCode(line.substring(0, index));
-                    codeInfo.setDescription(line.substring(index).trim());
-                    extractedData.put(codeInfo.getCode(), codeInfo);
-                }
-            }
-            reader.close();
-        } catch (IOException e) {
-
+        logger.info("Start Extracting Chapter Section from XML file:", fileStr);
+        try{
+            JAXBContext context = JAXBContext.newInstance(ICD10CMTabular.class);
+            ICD10CMTabular tabular = (ICD10CMTabular)context.createUnmarshaller()
+                    .unmarshal(new FileReader("/Users/mnachiappan/Documents/Development/clarit/icd10cm_tabular_2023.xml"));
+            logger.info("Retrived Data :", tabular.getChapter().size());
+        } catch(Exception e){
+            logger.error(e.toString(), e);
         }
-        logger.info("Code details successfully extracted {}", extractedData.size());
+
+        logger.info("Chapter section from XML successfully extracted:");
     }
 
     @Override
