@@ -61,8 +61,13 @@ public class CodeSearchService implements CodeSearchController {
         logger.info("Getting Code Information Details for code:", code);
         CodeDetails codeDetails = dbCodeDetailsRepository.findByCode(code);
         Section section = sectionRepository.findByCode(code);
-        codeDetails.setSection(section);
-        codeDetails.setChapter(chapterRepository.findById(section.getChapterId()).get());
+        if(section != null) {
+            codeDetails.setSection(section);
+            chapterRepository.findById(section.getChapterId()).ifPresent(value -> {
+                codeDetails.setChapter(value);
+            });
+        }
+        //codeDetails.setChapter(.get());
         return codeDetails;
     }
 }
