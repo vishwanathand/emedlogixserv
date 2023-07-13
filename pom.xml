@@ -134,7 +134,7 @@
                         <xjbSource>src/main/resources/global.xjb</xjbSource>
                     </xjbSources>-->
             <sources>
-                <source>src/main/resources/icd10cm_tabular.xsd</source>
+                <source>src/main/resources/icd10cm_tabular001.xsd</source>
             </sources>
             <outputDirectory>${basedir}/src/main/java</outputDirectory>
             <clearOutputDir>false</clearOutputDir>
